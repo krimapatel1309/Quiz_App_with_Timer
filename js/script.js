@@ -1,3 +1,48 @@
+// setting cookie
+const setcookie = (name, value, exdays) => {
+    const d = new Date();
+    d.setTime(d.getTime() + 60 * 1000);
+    let expires = "expires" + d.toUTCString();
+    document.cookie = name + "=" + (value || " ") + ";" + expires + "; path=/";
+};
+
+// getting/retriving coookie
+const getCookie = (cname) => {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == " ") {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+};
+// checking whether cookie is present or not
+const checkCookie = () => {
+    console.log("hey");
+    let user = getCookie("username");
+    if (user != "") {
+        console.log("heyq1");
+        alert("Welcome Again " + user);
+    } else {
+        console.log("heyq11s");
+        user = prompt("Please Enter Your Name: ");
+        if (user != "" && user != null) {
+            setcookie("username", user, 30);
+        }
+    }
+};
+
+window.onload = () => {
+    //once window loaded
+    checkCookie();
+};
+
 //Start Section
 let start = document.querySelector("#start");
 
@@ -33,7 +78,6 @@ let startAgain = document.querySelector("#startAgain");
 //Get All 'H4' From Quiz Section (MCQS)
 let choice_que = document.querySelectorAll(".choice_que");
 
-
 let index = 0;
 let timer = 0;
 let interval = 0;
@@ -56,7 +100,6 @@ exit.addEventListener("click", () => {
     guide.style.display = "none";
 });
 
-
 //Creating Timer For Quiz Timer Section
 
 let countDown = () => {
@@ -67,7 +110,7 @@ let countDown = () => {
         timer++;
         time.innerText = timer;
     }
-}
+};
 
 //setInterval(countDown,1000);
 
@@ -81,7 +124,7 @@ let loadData = () => {
 
     //    timer start
     timer = 0;
-}
+};
 
 loadData();
 
@@ -95,11 +138,13 @@ continueBtn.addEventListener("click", () => {
 
     //    remove All Active Classes When Continue Button Will Click
 
-    choice_que.forEach(removeActive => {
+    choice_que.forEach((removeActive) => {
         removeActive.classList.remove("active");
-    })
+    });
 
-    total_correct.innerHTML = `${correct = 0} Out Of ${MCQS.length} Questions`;
+    total_correct.innerHTML = `${(correct = 0)} Out Of ${
+        MCQS.length
+    } Questions`;
 });
 
 choice_que.forEach((choices, choiceNo) => {
@@ -118,7 +163,7 @@ choice_que.forEach((choices, choiceNo) => {
         for (i = 0; i <= 3; i++) {
             choice_que[i].classList.add("disabled");
         }
-    })
+    });
 });
 
 ////what happen when 'Next' Button Will Click
@@ -126,9 +171,9 @@ next_question.addEventListener("click", () => {
     //    if index is less then MCQS.length
     if (index !== MCQS.length - 1) {
         index++;
-        choice_que.forEach(removeActive => {
+        choice_que.forEach((removeActive) => {
             removeActive.classList.remove("active");
-        })
+        });
 
         //question
         loadData();
@@ -141,7 +186,6 @@ next_question.addEventListener("click", () => {
     } else {
         index = 0;
 
-
         //when Quiz Question Complete Display Result Section
         clearInterval(interval);
         quiz.style.display = "none";
@@ -151,7 +195,7 @@ next_question.addEventListener("click", () => {
     for (i = 0; i <= 3; i++) {
         choice_que[i].classList.remove("disabled");
     }
-})
+});
 
 //what happen when 'Quit' Button Will Click
 quit.addEventListener("click", () => {
